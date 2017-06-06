@@ -1,3 +1,4 @@
+require 'byebug'
 class Simon
   COLORS = %w(red blue green yellow)
 
@@ -6,7 +7,7 @@ class Simon
   def initialize
     @game_over = false
     @seq = []
-    @sequence_length = @seq.length + 1
+    @sequence_length = 1
   end
 
   def play
@@ -18,12 +19,17 @@ class Simon
   end
 
   def take_turn
-      pc = self.show_sequence
-      human = self.require_sequence
-      if pc == human
-        @sequence_length += 1
-        self.round_success_message
-      end
+    pc = self.show_sequence
+    sleep(1)
+    system("clear")
+    human = self.require_sequence
+    # debugger
+    if pc == human
+      @sequence_length += 1
+      self.round_success_message
+    else
+      @game_over = true
+    end
   end
 
   def show_sequence
@@ -32,7 +38,9 @@ class Simon
   end
 
   def require_sequence
-
+    p "Type our the sequence like:color1 color2 color3"
+    ans = []
+    ans += gets.chomp.split(" ")
   end
 
   def add_random_color
@@ -53,3 +61,6 @@ class Simon
     @sequence_length = 1
   end
 end
+
+game = Simon.new
+game.play
